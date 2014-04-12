@@ -1,1 +1,2 @@
-ocaml main.ml
+all :
+	ocaml main.ml
