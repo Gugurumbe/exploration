@@ -6,6 +6,15 @@ let monde = charger_carte fichier ;;
 close_in fichier ;;
 
 let position_utilisateur = ref 0 ;;
+
+let nom_courant () =
+  monde.zones.(!position_utilisateur).nom 
+;;
+
+let description_courante () =
+  monde.zones.(!position_utilisateur).description
+;;
+
 try
   let fichier_utilisateur = open_in_bin "user" in
   position_utilisateur := input_binary_int fichier_utilisateur ;
