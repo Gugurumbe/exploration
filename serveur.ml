@@ -37,7 +37,10 @@ let lancer_service input output =
   let get_command () =
     String.trim (input_line input) 
   in
+  output_string output "Donnez-moi le nom du monde sur lequel vous voulez jouer (exemple : default_map) : " ;
+  flush output ;
   let nom_carte = get_command () in
+  output_string output "Donnez-moi le nom du joueur que vous voulez incarner (exemple : user). En cas d'absence d'un tel joueur, je crée une nouvelle partie.\n" ;
   let nom_utilisateur = get_command () in
   try 
     let jeu = init nom_carte nom_utilisateur in
