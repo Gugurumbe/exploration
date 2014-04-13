@@ -1,3 +1,4 @@
+#use "graphe.ml" ;;
 #use "monde.ml" ;;
 #use "jeu.ml" ;;
 #load "unix.cma" ;;
@@ -23,7 +24,16 @@ let service jeu get_command out =
       output_string out (string_of_float delai) ;
       output_string out " secondes)\n") !options ;
     flush out ;
-    commande := get_command () ;
+    begin
+      try
+	commande := get_command () 
+      with
+      | _ -> 
+	begin
+	  print_endline "Déconnexion forcée.\n" ;
+	  continuer := false ;
+	end
+    end ;
     if !commande = "quit" || !commande = "exit" || !commande = "quitter" then continuer := false 
     else
       try 
@@ -36,7 +46,11 @@ let service jeu get_command out =
 
 let lancer_service input output =
   let get_command () =
-    String.trim (input_line input) 
+    try
+      let entree = input_line input in
+      String.trim entree
+    with
+    | _ -> failwith "deco" 
   in
   output_string output "Donnez-moi le nom du monde sur lequel vous voulez jouer (exemple : default_map) : \n" ;
   flush output ;
@@ -48,7 +62,8 @@ let lancer_service input output =
     let jeu = init nom_carte nom_utilisateur in
     service jeu (get_command) output
   with
-  | _ -> output_string output ("Impossible de trouver cette carte : \""^nom_carte^"\".\n") ;
+  | Sys_error(_) -> 
+    output_string output ("Impossible de trouver cette carte : \""^nom_carte^"\".\n") 
 ;;
 
 let port = 45678 ;;

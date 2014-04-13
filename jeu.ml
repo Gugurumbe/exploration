@@ -24,7 +24,7 @@ let init nom_fichier nom_joueur =
       position_utilisateur := input_binary_int fichier_utilisateur ;
       close_in fichier_utilisateur 
     with
-    | Sys_error("user: No such file or directory") -> ()
+    | Sys_error(_) -> ()
   end ;
   let nom_courant () =
     monde.zones.(!position_utilisateur).nom 
