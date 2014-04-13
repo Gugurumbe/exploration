@@ -13,6 +13,7 @@ let service jeu get_command out =
     output_string out (jeu.nom_zone ()) ;
     output_string out "\n" ;
     output_string out (jeu.description ()) ;
+    output_string out "\n" ;
     options := jeu.lister_mouvements () ;
     List.iter (fun (invocation, voisin, delai) -> 
       output_string out invocation ;
@@ -37,10 +38,11 @@ let lancer_service input output =
   let get_command () =
     String.trim (input_line input) 
   in
-  output_string output "Donnez-moi le nom du monde sur lequel vous voulez jouer (exemple : default_map) : " ;
+  output_string output "Donnez-moi le nom du monde sur lequel vous voulez jouer (exemple : default_map) : \n" ;
   flush output ;
   let nom_carte = get_command () in
   output_string output "Donnez-moi le nom du joueur que vous voulez incarner (exemple : user). En cas d'absence d'un tel joueur, je crée une nouvelle partie.\n" ;
+  flush output ;
   let nom_utilisateur = get_command () in
   try 
     let jeu = init nom_carte nom_utilisateur in
